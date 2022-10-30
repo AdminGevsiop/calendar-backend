@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 require("dotenv").config();
 
@@ -7,6 +8,9 @@ const app = express();
 
 // Directorio Publico
 app.use( express.static("public") )
+
+// Lectura y parseo del body
+app.use( express.json() )
 
 
 // Rutas
