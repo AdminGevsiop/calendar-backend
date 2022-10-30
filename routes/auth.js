@@ -4,13 +4,12 @@
 */
 const { Router } = require("express");
 const router = Router();
-
-router.get("/", (req, res) => {
-
-    res.json({
-        ok: true
-    });
-})
+const { create, login, renew } = require("../controllers/auth");
 
 
-module.exports = router
+router.post("/", login);
+router.post("/create", create);
+router.get("/renew", renew);
+
+
+module.exports = router;
