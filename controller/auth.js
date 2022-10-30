@@ -1,31 +1,44 @@
 const { response } = require('express');
+const User = require('../models/User');
 
 
-const createUser = (req, res = response) => {
+const createUser = async (req, res = response) => {
 
-    const { name, email, password} = req.body;
+    const { email, password } = req.body;
 
-    if( name.length < 3) {
-        return res.status(400).json({
+    try {
+
+        let user = await User.findOne({ email });
+        if ( user ) {
+            res.status(400).json({
+                ok: false,
+                msg: 'El correo ya esta siendo usado por otro usuario'
+            })
+        }
+
+        user = new User(req.body);
+        await user.save();
+
+        res.status(201).json({
+            ok: true,
+            _id: user.id,
+            user_name: user.name
+        })
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
             ok: false,
-            msg: 'error - el nombre debe tener como minimo 3 letras'
-        });
+            msg: 'error'
+        })
     }
-
-    res.json({
-        ok: true,
-        msg: 'create',
-        name,
-        email,
-        password
-    })
 }
 
 const loginUser = (req, res = response) => {
 
-    const { email, password} = req.body;
+    const { email, password } = req.body;
 
-    res.json({
+    res.status(201).json({
         ok: true,
         msg: 'loginUser',
         email,
