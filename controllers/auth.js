@@ -1,29 +1,40 @@
 const {response} = require('express');
+const Usuario = require('../models/Usuario');
 
-const crearUsuario = (req, res =  response) => {
+const crearUsuario = async (req, res =  response) => {
 
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
+    try {
+        let usuario =  await Usuario.findOne({email});
+        if(usuario){
+            res.status(400).json({
+                ok: false,
+                msg: 'Un usuario existe con ese correo',
+            })
+        }
 
-    if(name.length < 5){
-        return res.status(400).json({
+        usuario = new Usuario( req.body);
+        await usuario.save();
+        
+        res.status(201).json({
+            ok: true,
+            uid: usuario.id,
+            name: usuario.name
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
             ok: false,
-            msg: "El nombre debe ser mayor a 4 letras."
+            msg: 'Por favor contactar con el administrador.',
         })
     }
 
-    res.json({
-        ok: true,
-        msg: 'registro',
-        name,
-        email,
-        password
-    })
 }
 
 const loginUsuario = (req, res =  response) => {
 
     const { email, password } = req.body;
-
+            
     res.json({
         ok: true,
         msg: 'login',
