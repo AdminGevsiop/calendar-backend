@@ -2,15 +2,30 @@ const { response } = require("express");
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/Usuario");
 
-const login = (req, res = response) => {
+const login = async (req, res = response) => {
 
     const { email, password } = req.body;
 
-    res.json({
+    let usuario = await Usuario.findOne({ email });
+    if(!usuario){
+        return res.status(400).json({
+            ok: false,
+            msg: "En usuario no existe"
+        });
+    }
+
+    const validatePassword = bcrypt.compareSync(password, usuario.password);
+    if(!validatePassword){
+        return res.status(400).json({
+            ok: false,
+            msg: "Contraseña incorrecta"
+        });
+    }
+
+    return res.status(200).json({
         ok: true,
-        msg: "Login",
-        email,
-        password
+        uid: usuario.id,
+        name: usuario.name
     });
 }
 
