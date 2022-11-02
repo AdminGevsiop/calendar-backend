@@ -72,11 +72,17 @@ const create = async (req, res = response) => {
     }
 }
 
-const renew = (req, res = response) => {
+const renew = async (req, res = response) => {
+
+    const { uid, name} = req;
+
+    const token = await generateJWT(uid, name);
 
     res.json({
         ok: true,
-        msg: "Renovar sesión"
+        uid,
+        name,
+        token
     });
 }
 
