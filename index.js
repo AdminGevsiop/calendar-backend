@@ -2,7 +2,8 @@
 
 const express = require('express');
 require( 'dotenv' ).config();
-const { dbConnection } = require('./database/config')
+const cors = require('cors');
+const { dbConnection } = require('./database/config');
 
 console.log( process.env )
 
@@ -12,6 +13,9 @@ const app = express();
 // Base de Datos
 dbConnection();
 
+//cors
+app.use(cors());
+
 // Directorio publico
 app.use( express.static('public') );
 
@@ -20,9 +24,6 @@ app.use( express.json() );
 
 //Rutas
 app.use('/api/auth', require('./routes/auth'))
-
-
-
 
 
 // escuchar
