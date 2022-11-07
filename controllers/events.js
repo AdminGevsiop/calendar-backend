@@ -26,11 +26,12 @@ const createEvent = async (req, res = response) => {
 }
 
 const getEvents = async (req, res = response) => {
-    const {  } = req.body;
+    
+    const eventos = await Evento.find().populate('user', ['name']);
 
     return res.json({
         ok: true,
-        msg: "getEvents"
+        eventos: eventos
     });
 }
 
