@@ -1,14 +1,5 @@
 const { response } = require("express");
 
-const getEvents = async (req, res = response) => {
-    const {  } = req.body;
-
-    return res.json({
-        ok: true,
-        msg: "getEvents"
-    });
-}
-
 const createEvent = async (req, res = response) => {
 
     const {  } = req.body;
@@ -16,6 +7,15 @@ const createEvent = async (req, res = response) => {
     return res.json({
         ok: true,
         msg: "createEvent"
+    });
+}
+
+const getEvents = async (req, res = response) => {
+    const {  } = req.body;
+
+    return res.json({
+        ok: true,
+        msg: "getEvents"
     });
 }
 
