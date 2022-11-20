@@ -37,12 +37,47 @@ const getEvents = async (req, res = response) => {
 
 const updateEvent = async (req, res = response) => {
 
-    const {  } = req.body;
+    const eventId = req.params.id;
+    const uid = req.params.uid;
 
-    return res.json({
-        ok: true,
-        msg: "updateEvent"
-    });
+    try {
+        const evento = await Evento.find({id: eventId});
+
+        if(!evento) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Evento no encontrado"
+            });
+        }
+
+        if(evento.user != uid){
+            return res.status(401).json({
+                ok: false,
+                msg: "Usted no tiene permisos para editar el evento"
+            });
+        }
+
+        const nuevoEvento = {
+            ...req.body,
+            user: uid
+        }
+
+        const eventoActualizado = await Evento.findByIdAndUpdate(eventId, nuevoEvento, {new: true});  
+
+        return res.json({
+            ok: true,
+            msg: eventoActualizado
+        });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: "Hable con el administrador"
+        });
+    }
+
+    
 }
 
 const deleteEvent = async (req, res = response) => {

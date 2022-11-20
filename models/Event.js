@@ -5,7 +5,7 @@ const schema = Schema({
         type: String,
         required: true
     },
-    title: {
+    notes: {
         type: String
     },
     start: {
