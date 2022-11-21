@@ -11,7 +11,7 @@ const login = async (req, res = response) => {
     if(!usuario){
         return res.status(400).json({
             ok: false,
-            msg: "En usuario no existe"
+            msg: "El usuario no existe"
         });
     }
 
@@ -42,7 +42,7 @@ const create = async (req, res = response) => {
         if(usuario){
             return res.status(400).json({
                 ok: false,
-                msg: "En usuario existe con ese correo"
+                msg: "Un usuario existe con ese correo"
             });
         }
         
