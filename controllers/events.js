@@ -39,10 +39,8 @@ const updateEvent = async (req, res = response) => {
 
     const eventId = req.params.id;
     const uid = req.uid;
-    console.log(eventId);
     try {
         const evento = await Evento.findById(eventId);
-        console.log( evento);
         if(!evento) {
             return res.status(404).json({
                 ok: false,
@@ -50,8 +48,6 @@ const updateEvent = async (req, res = response) => {
             });
         }
 
-        console.log(evento.user);
-        console.log( uid);
         if(evento.user != uid){
             return res.status(401).json({
                 ok: false,
