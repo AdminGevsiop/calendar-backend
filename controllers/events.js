@@ -37,11 +37,11 @@ const getEvents = async (req, res = response) => {
 
 const updateEvent = async (req, res = response) => {
 
-    const eventId = req.params.id;
-    const uid = req.params.uid;
+    const eventId = req.id;
+    const uid = req.uid;
 
     try {
-        const evento = await Evento.find({id: eventId});
+        const evento = await Evento.findOne({id: eventId});
 
         if(!evento) {
             return res.status(404).json({
